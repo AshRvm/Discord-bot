@@ -1,4 +1,4 @@
-# Discord-bot
+# Discord-bot (Sukon)
 A discord bot, which in a nutshell is an inferior Rythm(a popular music discord bot) with game integrations.<br>
 The player list is automatically updated when a person enters the voice channel.<br>
 A player's score will not be deleted if the player disconnects, and thus can rejoin the session.
