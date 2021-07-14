@@ -13,43 +13,12 @@ var songCount = 0;
 
 client.on("ready", () => {
     console.log("Connected as " + client.user.tag);
-
-    // custom : playing with " "
-    client.user.setActivity("MONKE", {type: "PLAYING"})
-
-    // client.guilds.cache.forEach((guild) => {
-    //     console.log(guild.name);
-    //     guild.channels.cache.forEach((channel) => {
-    //         console.log(` - ${channel.name} ${channel.type} ${channel.id}`);
-    //         // general text: 855354764086738947
-    //         // general voice: 855354764086738948
-    //         // test_voice: 861338306213969961
-    //         // test_text1: 861338248876916797
-    //         // test_text2: 861640261674074163
-    //     })
-    // })
-
-    let generalChannel = client.channels.cache.get("799531519051038760");
-    
-    // const attachment = new Discord.MessageAttachment("fubuki(7).jpg");
-    // generalChannel.send("Hello World !");
-    // generalChannel.send(attachment);
-
-    // generalChannel.send("Hello world !", {files: ["./fubuki(6).gif"]})
-
-    // animeNakame contest channels id 799531519051038760
-    // animeNakama vc id 799531675314946109
-    let vc = client.channels.cache.get("799531675314946109");
-    for(const [memberID, member] of vc.members){
-        // console.log(`${member.user.tag}`);
-        scoreboard.set(member.displayName, 0);
-    }
+    client.user.setActivity("Hololive", {type: "PLAYING"})
 })
 
 client.on("message", async recievedMessage => {
     if(recievedMessage.author == client.user) return;
     if(!recievedMessage.content.startsWith(prefix)) return;
-    // recievedMessage.channel.send("Message recieved, " + recievedMessage.author.toString() + ": " + recievedMessage.content);
 
     const serverQueue = queue.get(recievedMessage.guild.id);
 
@@ -120,7 +89,7 @@ function help(message){
     var current = "**?current** for the name of currently playing song\n\n";
     var queue = "**?queue** for the playlist of songs\n\n";
     var gachaAdd = "**?gacha** **?<player name>** for gacha roll\n";
-    var gachaSell = "**?cancelGacha** **?<player name>** for avoiding the gacha roll ~~like a pussy~~ and gain **e** points\n\n";
+    var gachaSell = "**?cancelGacha** **?<player name>** for avoiding the gacha roll and gain **e** points\n\n";
     var add = "**?add** **<player name1>**(optional) **?<player name2>**(optional) for awarding points\nIf **no one guessed** the song, please enter **?add**\n\n";
     var bonus = "**?bonus** **?<player name>** **?<points>** to award extra points besides the normal round points, like for rounds with VA/seasons or bonus round in between the normal rounds\n\n";
     var settings = "**?settings** to view the point allocation of this session and whether gacha is included or not\n\n";
@@ -202,7 +171,6 @@ function createSession(message, session){
     }else{
         message.channel.send(`A session is already in progress. To view details, please enter ${prefix}settings.`);
     }
-    // message.channel.send(`points are: ${session.points.easy},${session.points.med},${session.points.hard}`);
     return;
 }
 
@@ -219,7 +187,6 @@ function updateScoreboard(message){
 
             if(!scoreboard.has(member.displayName)){
                 scoreboard.set(member.displayName, 0);
-                // message.channel.send(`Added ${member.displayName}`);
             }
         }
         scoreboard.delete("Sukon");
@@ -232,8 +199,6 @@ function addPoints(message, session){
     if(name2 != undefined) var name1 = args[2].slice(0,-1);
     else var name1 = args[2];
     const points = session.currentPoint;
-    // console.log(`This is name1: ${name1}blah`);
-    // console.log(`This is name2: ${name2}blah`);
     
     if(name2 != undefined){
         if(!scoreboard.has(name1) || !scoreboard.has(name2)) return message.channel.send("Invlid names, please check again, or try updating scoreboard");
@@ -253,7 +218,6 @@ function addBonus(message){
     const args = message.content.split(`${prefix}`);
     var name = args[2].slice(0,-1);
     const points = args[3];
-    // console.log(`name: ${name}blah`);
     if(!scoreboard.has(name)) return message.channel.send("Invalid name, please try again");
     if(!points) return message.channel.send("Please enter the bonus points to be awarded as well");
     scoreboard.set(name, scoreboard.get(name) + parseInt(points));
@@ -356,18 +320,6 @@ function play(guild, song) {
         })
         .on("error", error => console.error(error));
         dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
-        // serverQueue.textChannel.send(`Start playing: **${song.title}**`);
 }
-
-// function processCommand(recievedMessage){
-//     let fullCommand = recievedMessage.content.substr(1);
-//     let splitCommand = fullCommand.split(" ");
-//     let primaryCommand = splitCommand[0];
-//     let arguments = splitCommand.slice(1);
-
-//     if(primaryCommand == "help"){
-//         recievedMessage.channel.send("un momento");
-//     }
-// }
 
 client.login(token);
